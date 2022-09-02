@@ -1,11 +1,29 @@
 const {spawnSync} = require('child_process')
 const fs = require('fs')
 
+let findRecipients = () => {
+    let emailRegexp = /[^<][A-z_\.]+@[A-z_\.]+[^>]/igm
+    let output = spawnSync('gpg',['--list-keys']);
+    let recipients = output.stdout.toString().match(emailRegexp)
+    return recipients;
+
+}
+
+let getRecipients = (req,res,next) => {
+    let recipients = findRecipients();
+    if(recipients.length <= 0){
+        res.render('index',{recipients:[],errors:['No Recipients Found']})
+    }else{
+        res.render('index',{recipients})
+    }
+}
+
 let handleMessage = (req,res,next) => {
     let exec_command = "gpg";
     let exec_params = [];
     let filename ="";
     let errors = []
+    let recipients = findRecipients();
 
     if(req.body.passphrase != undefined){
         exec_params.push( "--passphrase="+req.body.passphrase)
@@ -34,9 +52,9 @@ let handleMessage = (req,res,next) => {
         const output = spawnSync(exec_command,exec_params);
         if(req.body.encrypt !== undefined){
             let message = fs.readFileSync(filename+".asc").toString()
-            res.render('index',{errors,message});
+            res.render('index',{recipients,errors,message});
         }else{
-            res.render('index',{errors,message: output.stdout});
+            res.render('index',{recipients,errors,message: output.stdout});
         }
     }catch(e){
         if(e.code === 'ENOENT' && req.body.encrypt !== undefined && req.body.recipient === undefined){
@@ -45,7 +63,7 @@ let handleMessage = (req,res,next) => {
         if(e.code === 'ENOENT' && req.body.encrypt !== undefined && req.body.recipient !== undefined){
             errors.push("Chosen Recipient Doesn't exist");
         }
-        res.render('index',{errors,message:""});
+        res.render('index',{recipients,errors,message:""});
     }
 }
 
@@ -80,5 +98,6 @@ let addKey = (req,res,next) => {
 
 module.exports = {
     handleMessage,
-    addKey
+    addKey,
+    getRecipients
 }

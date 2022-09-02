@@ -1,8 +1,5 @@
 extends layout
 
-prepend page
-    - message = message
-
 block content
     div.row
         form.col-sm-8.offset-2(action='/' method='post')
@@ -18,7 +15,12 @@ block content
                 label(for="recipient") Recipient
                     span.text-danger.text-small
                         small &nbsp; *Required for encrpyting
-                input.form-control(name='recipient' type='text')
+                select.form-select(name='recipient' type='text')
+                    option
+                    each rec in recipients
+                        option(value=rec)= rec
+
+
             hr
             div.btn-group
                 button.btn.btn-primary(name='encrypt' value='encypt') Encrypt
