@@ -1,7 +1,11 @@
 extends layout
 
-prepend page
-    - message = message
-
 block content
-    h1 Coming Soon
+    div.row
+        form.col-sm-8.offset-2(action='/add-key',method='post')
+            div.form-group
+                label(for='key') Key
+                textarea.form-control(name='key')
+            hr
+            div.btn-group
+                button.btn.btn-primary(name='add') Add Key
