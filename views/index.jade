@@ -7,7 +7,10 @@ block content
                 label(for="message") Message
                     span.text-danger.text-small
                         small &nbsp; *Either encyrpted or decrypted
-                textarea.form-control(name='message') #{message}
+                    button.btn.btn-primary.copy(data-target="#message")
+                        span.fa-regular.fa-copy
+
+                textarea#message.form-control(name='message',rows="15") #{message}
             div.form-group
                 label(for="passphrase") Passphrase
                 input.form-control(name='passphrase' type='password')
