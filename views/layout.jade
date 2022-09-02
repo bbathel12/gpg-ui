@@ -8,8 +8,11 @@ html
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js")
   body.bg-dark.text-light
     div.container
+      a.navbar-brand(href="#") GPG UI
       nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-        div.collapse.navbar-collapse
+        button.navbar-toggler(type='button',data-toggle='collapse', data-target='#navbarSupportedContent',aria-controls="navbarSupportedContent", aria-expanded="false", aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        div.collapse.navbar-collapse#navbarSupportedContent
           ul.navbar-nav.mr-auto
             li.nav-item.active
               a.nav-link(href="/") Encrypt/Decrypt

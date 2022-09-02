@@ -82,8 +82,6 @@ let addKey = (req,res,next) => {
         exec_params.push(filename)
     }
     const output = spawnSync(exec_command,exec_params);
-    console.log("STDOUT",output.stdout.toString())
-    console.log("STDERR",output.stderr.toString())
 
     if(/no valid OpenPGP/mg.test(output.stderr.toString())){
         errors.push("Key not valid")
