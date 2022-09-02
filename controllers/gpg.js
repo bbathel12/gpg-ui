@@ -5,6 +5,7 @@ let handleMessage = (req,res,next) => {
     let exec_command = "gpg";
     let exec_params = [];
     let filename ="";
+    let errors = []
 
     console.log(req.body,req.body.decrypt == undefined);
 
@@ -31,15 +32,26 @@ let handleMessage = (req,res,next) => {
         exec_params.push(filename)
     }
 
-    console.log(exec_command,exec_params)
-    const output = spawnSync(exec_command,exec_params);
-    console.log(output.stderr.toString());
-    console.log(output.stdout.toString());
-    if(req.body.encrypt !== undefined){
-        let message = fs.readFileSync(filename+".asc").toString()
-        res.render('index.jade',{message});
-    }else{
-        res.render('index.jade',{message: output.stdout});
+    try{
+        console.log(exec_command,exec_params)
+        const output = spawnSync(exec_command,exec_params);
+        console.log(output.stderr.toString());
+        console.log(output.stdout.toString());
+        if(req.body.encrypt !== undefined){
+            let message = fs.readFileSync(filename+".asc").toString()
+            res.render('index.jade',{errors,message});
+        }else{
+            res.render('index.jade',{errors,message: output.stdout});
+        }
+
+    }catch(e){
+        console.log(typeof e)
+        console.log(e.code)
+
+        if(e.code === 'ENOENT' && req.body.encrypt !== undefined){
+            errors.push("No Recipients Chosen");
+        }
+        res.render('index.jade',{errors,message:""});
     }
 }
 

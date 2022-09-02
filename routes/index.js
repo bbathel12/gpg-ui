@@ -4,12 +4,12 @@ var {handleMessage} = require('../controllers/gpg');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { message: "" });
+  res.render('index', { errors: [],message: "" });
 });
-
-router.get('/hello', function(req,res,next){
-  res.send("HELLO")
+router.get('/add-keys',function(req,res,next){
+  res.render("add-keys")
 })
+
 router.post('/',handleMessage)
 
 module.exports = router;
