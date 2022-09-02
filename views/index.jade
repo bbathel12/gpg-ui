@@ -1,0 +1,24 @@
+extends layout
+
+prepend page
+    - message = message
+
+block content
+    div.row
+        form.col-sm-12(action='/' method='post')
+            div.form-group
+                label(for="message") Message
+                    span.text-danger.text-small
+                        small &nbsp; *Either encyrpted or decrypted
+                textarea.form-control(name='message') #{message}
+            div.form-group
+                label(for="passphrase") Passphrase
+                input.form-control(name='passphrase' type='password')
+            div.form-group
+                label(for="recipient") Recipient
+                    span.text-danger.text-small
+                        small &nbsp; *Required for encrpyting
+                input.form-control(name='recipient' type='text')
+            div.form-group
+                button.btn.btn-primary(name='encrypt' value='encypt') encrypt
+                button.btn.btn-secondary(name='decrypt' value='decrypt') decrypt
