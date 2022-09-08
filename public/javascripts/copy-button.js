@@ -1,20 +1,25 @@
 let success = (value) => {
-    console.log("Copied: "+value)
+    console.log("Copied: " + value)
 }
 let failure = (value) => {
-    console.log("Failed: "+value)
+    console.log("Failed: " + value)
 }
 
-$(document).ready(()=>{
+$(document).ready(() => {
 
-    document.querySelector('.copy').addEventListener('click',(e)=>{
+    let copy = document.querySelector('#message_copy')
+
+    document.querySelector('#message').addEventListener('keyup', (e) => {
+        copy.value = e.target.value
+    })
+
+    document.querySelector('.copy').addEventListener('click', (e) => {
         e.preventDefault()
-        let $this = $(e.target);
-        $this.focus()
-        let copyTarget = document.querySelector($this.data('target'))
-        navigator.clipboard.writeText(copyTarget.value)
+        copy.select();
+        copy.setSelectionRange(0, 9999999);
+        navigator.clipboard.writeText(copy.value)
             .then(
-                (success,failure)
+                (success, failure)
             );
     })
 })

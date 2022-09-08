@@ -63,7 +63,7 @@ let handleMessage = (req,res,next) => {
         if(e.code === 'ENOENT' && req.body.encrypt !== undefined && req.body.recipient !== undefined){
             errors.push("Chosen Recipient Doesn't exist");
         }
-        res.render('index',{recipients,errors,message:""});
+        res.render('index',{recipients,errors,message:(req.body.message)?req.body.message:null});
     }
 }
 

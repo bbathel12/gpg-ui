@@ -11,6 +11,7 @@ block content
                         span.fa-regular.fa-copy
 
                 textarea#message.form-control(name='message',rows="15") #{message}
+                textarea#message_copy.hidden
             div.form-group
                 label(for="passphrase") Passphrase
                 input.form-control(name='passphrase' type='password')
